@@ -62,12 +62,13 @@ class MainWindow:
         self.pause_button: QPushButton = w.findChild(QPushButton, "pause_button")
         self.stop_button: QPushButton = w.findChild(QPushButton, "stop_button")
         self.keyword_combo: QComboBox = w.findChild(QComboBox, "keyword_combo")
+        self.keyword_chinese_input: QLineEdit = w.findChild(QLineEdit, "keyword_chinese_input")
         self.gear_type_combo: QComboBox = w.findChild(QComboBox, "gear_type")
         self.mode_combo: QComboBox = w.findChild(QComboBox, "mode_combo")
         
         # Keyword selection tracking
         self._keyword_selected_from_dropdown = False
-        self.keyword_mapping: Dict[str, str] = {}
+        self.keyword_mapping: Dict[str, str] = {}  # English -> Chinese mapping
         self._all_keywords: List[str] = []  # All English keywords for filtering
         
         # Tables
@@ -146,6 +147,26 @@ class MainWindow:
             logger.warning("✗ Failed to load keywords")
             self._all_keywords = []
     
+    def _on_keyword_combo_changed(self, index: int):
+        """Handle keyword combo selection change - auto-fill Chinese keyword."""
+        if index < 0 or not self.keyword_chinese_input:
+            return
+        
+        english_keyword = self.keyword_combo.currentText().strip()
+        if not english_keyword:
+            return
+        
+        # Look up Chinese keyword from mapping
+        chinese_keyword = self.keyword_mapping.get(english_keyword, "")
+        
+        if chinese_keyword:
+            # Found mapping - auto-fill Chinese input
+            self.keyword_chinese_input.setText(chinese_keyword)
+        else:
+            # No mapping - show hint and clear input
+            self.keyword_chinese_input.setText("")
+            self._show_status("If your keyword is not in the list, please enter it directly in the right box.")
+    
     def _load_filter_words(self):
         """Load filter words from Excel and populate filter combo boxes with real-time filtering."""
         self._all_filter_words = load_filter_words()
@@ -189,9 +210,14 @@ class MainWindow:
         if self.keyword_combo:
             # Track when user types (not selecting from dropdown)
             self.keyword_combo.editTextChanged.connect(self._on_keyword_text_changed)
-            # Track when user selects from dropdown
-            self.keyword_combo.currentIndexChanged.connect(self._on_keyword_index_changed)
+            # Track when user selects from dropdown - auto-fill Chinese keyword
+            self.keyword_combo.currentIndexChanged.connect(self._on_keyword_combo_changed)
             logger.info("✓ keyword_combo signals connected")
+        
+        # Chinese keyword input
+        if self.keyword_chinese_input:
+            self.keyword_chinese_input.textChanged.connect(self._on_keyword_chinese_changed)
+            logger.info("✓ keyword_chinese_input signals connected")
         
         # Main search buttons
         if self.start_button:
@@ -255,31 +281,39 @@ class MainWindow:
             # User selected from dropdown
             self._keyword_selected_from_dropdown = True
     
+    def _on_keyword_chinese_changed(self, text: str):
+        """Called when user types in Chinese keyword input box."""
+        # User is manually entering Chinese keyword - this takes priority
+        pass  # No action needed, just logging
+    
     def _get_search_keyword(self) -> str:
         """
-        Get the actual search keyword based on user action.
+        Get the actual search keyword from Chinese input box.
         
         Rules:
-        - If user selected from dropdown: use Chinese keyword from Excel
-        - If user typed manually: use the typed text as-is
+        - Always use the content of keyword_chinese_input for search
+        - If empty, fall back to keyword_combo
         
         Returns:
             The keyword to search for
         """
-        if not self.keyword_combo:
-            return ""
+        # Priority 1: Chinese keyword input box
+        if self.keyword_chinese_input:
+            chinese_keyword = self.keyword_chinese_input.text().strip()
+            if chinese_keyword:
+                logger.info(f"Search keyword (Chinese input): '{chinese_keyword}'")
+                return chinese_keyword
         
-        text = self.keyword_combo.currentText().strip()
+        # Priority 2: Fallback to keyword combo
+        if self.keyword_combo:
+            text = self.keyword_combo.currentText().strip()
+            if text:
+                # Try to get Chinese mapping
+                chinese_keyword = self.keyword_mapping.get(text, text)
+                logger.info(f"Search keyword (fallback): '{chinese_keyword}'")
+                return chinese_keyword
         
-        if self._keyword_selected_from_dropdown:
-            # User selected from dropdown - use Chinese keyword
-            chinese_keyword = self.keyword_mapping.get(text, text)
-            logger.info(f"Keyword selected from dropdown: '{text}' -> '{chinese_keyword}'")
-            return chinese_keyword
-        else:
-            # User typed manually - use as-is
-            logger.info(f"Keyword typed manually: '{text}'")
-            return text
+        return ""
     
     def _setup_initial_state(self):
         """Set up initial button states."""

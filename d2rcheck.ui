@@ -386,14 +386,40 @@ QLabel[headerLabel="true"] {
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QComboBox" name="keyword_combo">
-            <property name="editable">
-             <bool>true</bool>
+           <layout class="QHBoxLayout" name="keywordLayout">
+            <property name="spacing">
+             <number>8</number>
             </property>
-            <property name="placeholderText">
-             <string>Select or type keyword...</string>
-            </property>
-           </widget>
+            <item>
+             <widget class="QComboBox" name="keyword_combo">
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Select keyword...</string>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="keyword_chinese_input">
+              <property name="placeholderText">
+               <string>Chinese keyword for search...</string>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>2</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
