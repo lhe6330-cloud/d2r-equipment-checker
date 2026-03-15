@@ -40,7 +40,17 @@ PAGE_DELAY_SECONDS = 5
 # =============================================================================
 # Currency Configuration
 # =============================================================================
-CNY_TO_USD_RATE = 0.14  # 1 CNY ≈ 0.14 USD (adjust as needed)
+# Exchange rate is now managed dynamically in settings_manager.py
+# Default: 1 USD = 6.8 CNY
+
+
+def get_exchange_rate() -> float:
+    """Get current exchange rate (1 USD = X CNY)."""
+    try:
+        from settings_manager import get_exchange_rate as get_rate
+        return get_rate()
+    except Exception:
+        return 6.8  # Default fallback
 
 
 def format_cny(price: str) -> str:
@@ -58,7 +68,8 @@ def format_usd(price: str) -> str:
     try:
         clean_price = price.replace('¥', '').replace(',', '').strip()
         cny_value = float(clean_price)
-        usd_value = cny_value * CNY_TO_USD_RATE
+        exchange_rate = get_exchange_rate()
+        usd_value = cny_value / exchange_rate  # CNY / rate = USD
         return f"${usd_value:.2f}"
     except (ValueError, AttributeError):
         return "N/A"
@@ -72,16 +83,31 @@ def format_price(cny_price: str) -> str:
         cny_price: Price string in CNY (may contain ¥ symbol)
     
     Returns:
-        Formatted string like "¥580 / $81"
+        Formatted string like "¥580 / $85"
     """
     try:
         # Clean the price string
         clean_price = cny_price.replace('¥', '').replace(',', '').strip()
         cny_value = float(clean_price)
-        usd_value = cny_value * CNY_TO_USD_RATE
+        exchange_rate = get_exchange_rate()
+        usd_value = cny_value / exchange_rate  # CNY / rate = USD
         return f"¥{cny_value:.0f} / ${usd_value:.2f}"
     except (ValueError, AttributeError):
         return f"¥{cny_price}"
+
+
+def recalculate_usd_price(cny_value: float) -> float:
+    """
+    Recalculate USD price from CNY using current exchange rate.
+    
+    Args:
+        cny_value: Price in CNY
+    
+    Returns:
+        Price in USD
+    """
+    exchange_rate = get_exchange_rate()
+    return cny_value / exchange_rate
 
 
 # =============================================================================

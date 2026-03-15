@@ -16,8 +16,9 @@ from PySide6.QtGui import QDesktopServices
 
 from config import (
     TaskStatus, COLUMN_WIDTHS, get_gear_type_url, format_cny, format_usd,
-    load_keyword_mapping, load_filter_words
+    load_keyword_mapping, load_filter_words, recalculate_usd_price
 )
+from settings_manager import load_settings, set_exchange_rate, get_exchange_rate
 from models import ItemData, FilterCondition, SearchTask, TaskResultItem
 from data_manager import DataManager
 from crawler import CrawlerThread
@@ -75,6 +76,10 @@ class MainWindow:
         self.task_list_widget: QTableWidget = w.findChild(QTableWidget, "rask_list")
         self.task_result_widget: QTableWidget = w.findChild(QTableWidget, "task_check_result")
         
+        # Exchange rate controls
+        self.exchange_rate_input: QLineEdit = w.findChild(QLineEdit, "exchange_rate_input")
+        self.refresh_rate_button: QPushButton = w.findChild(QPushButton, "refresh_rate_button")
+        
         # Task list buttons
         self.add_task_btn: QPushButton = w.findChild(QPushButton, "add_task_list")
         self.start_list_btn: QPushButton = w.findChild(QPushButton, "start_list_check")
@@ -107,6 +112,7 @@ class MainWindow:
         """Set up all UI connections and initial state."""
         self._load_keywords()
         self._load_filter_words()
+        self._setup_exchange_rate()
         self._connect_signals()
         self._setup_initial_state()
         self._load_data()
@@ -170,6 +176,13 @@ class MainWindow:
         else:
             logger.warning("✗ Failed to load filter words")
     
+    def _setup_exchange_rate(self):
+        """Initialize exchange rate input with saved value."""
+        if self.exchange_rate_input:
+            current_rate = get_exchange_rate()
+            self.exchange_rate_input.setText(str(current_rate))
+            logger.info(f"✓ Exchange rate initialized: 1 USD = {current_rate} CNY")
+    
     def _connect_signals(self):
         """Connect all UI signals to handlers."""
         # Keyword combo box signals
@@ -208,6 +221,11 @@ class MainWindow:
             self.import_task_btn.clicked.connect(self._on_import_task_list_clicked)
         if self.clear_task_btn:
             self.clear_task_btn.clicked.connect(self._on_clear_task_list_clicked)
+        
+        # Exchange rate controls
+        if self.refresh_rate_button:
+            self.refresh_rate_button.clicked.connect(self._on_refresh_exchange_rate_clicked)
+            logger.info("✓ refresh_rate_button connected")
         
         # Order list buttons
         if self.export_orderlist_btn:
@@ -668,6 +686,61 @@ class MainWindow:
         count = self.data_manager.clear_filled_items()
         self._update_orderlist_table()
         self._show_status(f"Cleared {count} filled items")
+    
+    def _on_refresh_exchange_rate_clicked(self):
+        """Handle exchange rate refresh button click."""
+        try:
+            # Get new exchange rate from input
+            rate_text = self.exchange_rate_input.text().strip()
+            if not rate_text:
+                self._show_status("Error: Exchange rate cannot be empty")
+                return
+            
+            new_rate = float(rate_text)
+            
+            if new_rate <= 0:
+                self._show_status("Error: Exchange rate must be positive")
+                return
+            
+            # Save to settings
+            success = set_exchange_rate(new_rate)
+            
+            # Refresh all displayed prices
+            self._refresh_all_prices()
+            self._show_status(f"✓ Exchange rate updated: 1 USD = {new_rate} CNY")
+        
+        except ValueError:
+            self._show_status("Error: Invalid exchange rate format. Please enter a number.")
+        except Exception as e:
+            logger.error(f"Failed to update exchange rate: {e}")
+            self._show_status(f"Error: {str(e)}")
+    
+    def _refresh_all_prices(self):
+        """Refresh all displayed prices with new exchange rate."""
+        # Refresh main results table by re-adding all items
+        self._refresh_main_table()
+        
+        # Refresh task results table
+        self._update_task_result_table()
+        
+        # Refresh order list table
+        self._update_orderlist_table()
+        
+        logger.info("✓ All prices refreshed with new exchange rate")
+    
+    def _refresh_main_table(self):
+        """Refresh main results table with new exchange rate."""
+        if not self.table_widget or not self.all_crawled_items:
+            return
+        
+        # Clear current table
+        self.table_widget.setRowCount(0)
+        
+        # Re-add all items with updated USD prices
+        for item in self.all_crawled_items:
+            self._add_item_to_table(item)
+        
+        logger.info(f"✓ Main table refreshed with {len(self.all_crawled_items)} items")
     
     # =========================================================================
     # Task List Management
