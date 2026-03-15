@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1400</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>D2R Equipment Checker</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+/* ===== MAIN WINDOW ===== */
+QMainWindow, QWidget#centralwidget {
+    background-color: #12141a;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    color: #c8ccd4;
+}
+
+/* ===== GROUP BOXES ===== */
+QGroupBox {
+    background-color: #1a1d24;
+    border: 1px solid #2a2f3a;
+    border-radius: 6px;
+    margin-top: 14px;
+    padding: 12px;
+    padding-top: 20px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 12px;
+    padding: 2px 10px;
+    background-color: #1a1d24;
+    color: #5dadec;
+    font-size: 13px;
+}
+
+/* ===== BUTTONS ===== */
+QPushButton {
+    background-color: #252a34;
+    border: 1px solid #3a3f4a;
+    border-radius: 4px;
+    padding: 8px 16px;
+    color: #c8ccd4;
+    font-weight: 500;
+    min-height: 24px;
+}
+
+QPushButton:hover {
+    background-color: #2f3542;
+    border-color: #5dadec;
+}
+
+QPushButton:pressed {
+    background-color: #1a1d24;
+}
+
+QPushButton:disabled {
+    background-color: #1a1d24;
+    border-color: #252a34;
+    color: #4a4f5a;
+}
+
+/* Primary Action Button */
+QPushButton#start_button {
+    background-color: #2d8a4e;
+    border-color: #3da864;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+QPushButton#start_button:hover {
+    background-color: #3da864;
+}
+
+/* Danger Buttons */
+QPushButton#stop_button, QPushButton#stop_list_check {
+    background-color: #8a2d3d;
+    border-color: #a83d4e;
+    color: #ffffff;
+}
+
+QPushButton#stop_button:hover, QPushButton#stop_list_check:hover {
+    background-color: #a83d4e;
+}
+
+/* Export Button */
+QPushButton#export_orderlist {
+    background-color: #2d5a8a;
+    border-color: #3d7ab0;
+    color: #ffffff;
+}
+
+QPushButton#export_orderlist:hover {
+    background-color: #3d7ab0;
+}
+
+/* ===== INPUT FIELDS ===== */
+QLineEdit {
+    background-color: #1e222a;
+    border: 1px solid #2a2f3a;
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: #c8ccd4;
+    selection-background-color: #5dadec;
+}
+
+QLineEdit:focus {
+    border-color: #5dadec;
+}
+
+QLineEdit::placeholder {
+    color: #5a5f6a;
+}
+
+/* ===== COMBO BOX ===== */
+QComboBox {
+    background-color: #1e222a;
+    border: 1px solid #2a2f3a;
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: #c8ccd4;
+    min-width: 140px;
+}
+
+QComboBox:hover, QComboBox:focus {
+    border-color: #5dadec;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 24px;
+    padding-right: 8px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #5dadec;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #1e222a;
+    border: 1px solid #5dadec;
+    selection-background-color: #2d5a8a;
+    color: #c8ccd4;
+    padding: 4px;
+}
+
+/* ===== CHECK BOXES ===== */
+QCheckBox {
+    spacing: 8px;
+    color: #c8ccd4;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 2px solid #3a3f4a;
+    background-color: #1e222a;
+}
+
+QCheckBox::indicator:hover {
+    border-color: #5dadec;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #5dadec;
+    border-color: #5dadec;
+}
+
+/* ===== TABLES ===== */
+QTableWidget {
+    background-color: #1e222a;
+    alternate-background-color: #22262e;
+    border: 1px solid #2a2f3a;
+    border-radius: 4px;
+    gridline-color: #2a2f3a;
+    selection-background-color: #2d5a8a;
+    selection-color: #ffffff;
+}
+
+QTableWidget::item {
+    padding: 6px 8px;
+    border: none;
+}
+
+QTableWidget::item:selected {
+    background-color: #2d5a8a;
+}
+
+QHeaderView::section {
+    background-color: #252a34;
+    color: #8a9bae;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 2px solid #2a2f3a;
+    border-right: 1px solid #2a2f3a;
+}
+
+QHeaderView::section:last {
+    border-right: none;
+}
+
+/* ===== SCROLL BARS ===== */
+QScrollBar:vertical {
+    background-color: #1a1d24;
+    width: 10px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #3a3f4a;
+    border-radius: 5px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #5dadec;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    height: 0;
+    background: none;
+}
+
+QScrollBar:horizontal {
+    background-color: #1a1d24;
+    height: 10px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #3a3f4a;
+    border-radius: 5px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #5dadec;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    width: 0;
+    background: none;
+}
+
+/* ===== STATUS BAR ===== */
+QStatusBar {
+    background-color: #1a1d24;
+    color: #6a7a8a;
+    border-top: 1px solid #2a2f3a;
+    padding: 6px 12px;
+    font-size: 11px;
+}
+
+/* ===== LABELS ===== */
+QLabel {
+    color: #8a9bae;
+    font-size: 12px;
+}
+
+QLabel[headerLabel="true"] {
+    color: #5dadec;
+    font-size: 11px;
+    font-weight: 600;
+}
+   </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="mainLayout">
+    <property name="spacing">
+     <number>16</number>
+    </property>
+    <property name="leftMargin">
+     <number>16</number>
+    </property>
+    <property name="topMargin">
+     <number>16</number>
+    </property>
+    <property name="rightMargin">
+     <number>16</number>
+    </property>
+    <property name="bottomMargin">
+     <number>16</number>
+    </property>
+    
+    <!-- LEFT PANEL -->
+    <item>
+     <widget class="QWidget" name="leftPanel">
+      <property name="maximumWidth">
+       <number>380</number>
+      </property>
+      <layout class="QVBoxLayout" name="leftLayout">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       
+       <!-- Search Settings -->
+       <item>
+        <widget class="QGroupBox" name="searchGroup">
+         <property name="title">
+          <string>Search Settings</string>
+         </property>
+         <layout class="QFormLayout" name="searchFormLayout">
+          <property name="horizontalSpacing">
+           <number>16</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>12</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="gearLabel">
+            <property name="text">
+             <string>Gear Type</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="gear_type">
+            <item><property name="text"><string>Amulet</string></property></item>
+            <item><property name="text"><string>Ring</string></property></item>
+            <item><property name="text"><string>Charm</string></property></item>
+            <item><property name="text"><string>Jewel</string></property></item>
+            <item><property name="text"><string>Weapon</string></property></item>
+            <item><property name="text"><string>Shield</string></property></item>
+            <item><property name="text"><string>Hat</string></property></item>
+            <item><property name="text"><string>Armor</string></property></item>
+            <item><property name="text"><string>Glove</string></property></item>
+            <item><property name="text"><string>Belt</string></property></item>
+            <item><property name="text"><string>Boots</string></property></item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="ladderLabel">
+            <property name="text">
+             <string>Mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="mode_combo">
+            <item><property name="text"><string>all</string></property></item>
+            <item><property name="text"><string>ladder</string></property></item>
+            <item><property name="text"><string>warlock ladder</string></property></item>
+            <item><property name="text"><string>warlock nonladder</string></property></item>
+            <item><property name="text"><string>nonladder</string></property></item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="keywordLabel">
+            <property name="text">
+             <string>Keyword</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="key_word">
+            <property name="placeholderText">
+             <string>Search keyword...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
+       <!-- Attribute Filters -->
+       <item>
+        <widget class="QGroupBox" name="filterGroup">
+         <property name="title">
+          <string>Attribute Filters</string>
+         </property>
+         <layout class="QGridLayout" name="filterGridLayout">
+          <property name="horizontalSpacing">
+           <number>8</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>8</number>
+          </property>
+          <!-- Headers -->
+          <item row="0" column="0">
+           <widget class="QLabel" name="attrHeader">
+            <property name="text"><string>ATTRIBUTE</string></property>
+            <property name="styleSheet"><string>color: #5dadec; font-weight: 600; font-size: 10px;</string></property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="minHeader">
+            <property name="text"><string>MIN</string></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+            <property name="styleSheet"><string>color: #5dadec; font-weight: 600; font-size: 10px;</string></property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="maxHeader">
+            <property name="text"><string>MAX</string></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+            <property name="styleSheet"><string>color: #5dadec; font-weight: 600; font-size: 10px;</string></property>
+           </widget>
+          </item>
+          <!-- Filter Row 1 -->
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="filter_word_1">
+            <property name="placeholderText"><string>fcr, str, mf...</string></property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="fw_1_min">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="fw_1_max">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <!-- Filter Row 2 -->
+          <item row="2" column="0">
+           <widget class="QLineEdit" name="filter_word_2">
+            <property name="placeholderText"><string>all res, life...</string></property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="fw_2_min">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLineEdit" name="fw_2_max">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <!-- Filter Row 3 -->
+          <item row="3" column="0">
+           <widget class="QLineEdit" name="filter_word_3">
+            <property name="placeholderText"><string>+skills, ed...</string></property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="fw_3_min">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLineEdit" name="fw_3_max">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <!-- Filter Row 4 -->
+          <item row="4" column="0">
+           <widget class="QLineEdit" name="filter_word_4">
+            <property name="placeholderText"><string>socket, eth...</string></property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="fw_4_min">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLineEdit" name="fw_4_max">
+            <property name="maximumWidth"><number>55</number></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
+       <!-- Search Controls -->
+       <item>
+        <layout class="QHBoxLayout" name="searchControlsLayout">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="start_button">
+           <property name="text"><string>Start Search</string></property>
+           <property name="minimumHeight"><number>38</number></property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pause_button">
+           <property name="text"><string>Pause</string></property>
+           <property name="minimumHeight"><number>38</number></property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stop_button">
+           <property name="text"><string>Stop</string></property>
+           <property name="minimumHeight"><number>38</number></property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       
+       <!-- Task List -->
+       <item>
+        <widget class="QGroupBox" name="taskGroup">
+         <property name="title">
+          <string>Task List</string>
+         </property>
+         <layout class="QVBoxLayout" name="taskVLayout">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <item>
+           <layout class="QGridLayout" name="taskButtonsLayout">
+            <property name="horizontalSpacing">
+             <number>6</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="add_task_list">
+              <property name="text"><string>Add Task</string></property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="start_list_check">
+              <property name="text"><string>Run All</string></property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="next_list_check">
+              <property name="text"><string>Skip</string></property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="stop_list_check">
+              <property name="text"><string>Stop</string></property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="save_task_list">
+              <property name="text"><string>Save</string></property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="import_task_list">
+              <property name="text"><string>Import</string></property>
+             </widget>
+            </item>
+            <item row="1" column="2" colspan="2">
+             <widget class="QPushButton" name="clear_task_list">
+              <property name="text"><string>Clear All</string></property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="rask_list">
+            <property name="minimumHeight"><number>120</number></property>
+            <property name="alternatingRowColors"><bool>true</bool></property>
+            <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+            <property name="rowCount"><number>0</number></property>
+            <property name="columnCount"><number>3</number></property>
+            <column><property name="text"><string>Task Name</string></property></column>
+            <column><property name="text"><string>Status</string></property></column>
+            <column><property name="text"><string>Del</string></property></column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       
+       <item>
+        <spacer name="leftSpacer">
+         <property name="orientation"><enum>Qt::Vertical</enum></property>
+         <property name="sizeHint" stdset="0">
+          <size><width>20</width><height>10</height></size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    
+    <!-- RIGHT PANEL -->
+    <item>
+     <layout class="QVBoxLayout" name="rightLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      
+      <!-- Search Results -->
+      <item>
+       <widget class="QGroupBox" name="resultsGroup">
+        <property name="title">
+         <string>Search Results</string>
+        </property>
+        <layout class="QVBoxLayout" name="resultsVLayout">
+         <item>
+          <widget class="QTableWidget" name="tableWidget">
+           <property name="minimumHeight"><number>140</number></property>
+           <property name="alternatingRowColors"><bool>true</bool></property>
+           <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+           <property name="rowCount"><number>0</number></property>
+           <property name="columnCount"><number>5</number></property>
+           <column><property name="text"><string>Stats</string></property></column>
+           <column><property name="text"><string>CNY</string></property></column>
+           <column><property name="text"><string>USD</string></property></column>
+           <column><property name="text"><string>Link</string></property></column>
+           <column><property name="text"><string>Add</string></property></column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      
+      <!-- Task Results -->
+      <item>
+       <widget class="QGroupBox" name="taskResultsGroup">
+        <property name="title">
+         <string>Task Results</string>
+        </property>
+        <layout class="QVBoxLayout" name="taskResultsVLayout">
+         <item>
+          <widget class="QTableWidget" name="task_check_result">
+           <property name="minimumHeight"><number>120</number></property>
+           <property name="alternatingRowColors"><bool>true</bool></property>
+           <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+           <property name="rowCount"><number>0</number></property>
+           <property name="columnCount"><number>7</number></property>
+           <column><property name="text"><string>Task</string></property></column>
+           <column><property name="text"><string>Stats</string></property></column>
+           <column><property name="text"><string>CNY</string></property></column>
+           <column><property name="text"><string>USD</string></property></column>
+           <column><property name="text"><string>Link</string></property></column>
+           <column><property name="text"><string>Add</string></property></column>
+           <column><property name="text"><string>Del</string></property></column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      
+      <!-- Order List -->
+      <item>
+       <widget class="QGroupBox" name="orderGroup">
+        <property name="title">
+         <string>Order List</string>
+        </property>
+        <layout class="QVBoxLayout" name="orderVLayout">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="orderButtonsLayout">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="export_orderlist">
+             <property name="text"><string>Export CSV</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="mark_all_unfilled">
+             <property name="text"><string>Reset All</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="clear_filled">
+             <property name="text"><string>Clear Filled</string></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="orderButtonSpacer">
+             <property name="orientation"><enum>Qt::Horizontal</enum></property>
+             <property name="sizeHint" stdset="0">
+              <size><width>40</width><height>20</height></size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="orderlist">
+           <property name="minimumHeight"><number>180</number></property>
+           <property name="alternatingRowColors"><bool>true</bool></property>
+           <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+           <property name="rowCount"><number>0</number></property>
+           <property name="columnCount"><number>7</number></property>
+           <column><property name="text"><string>Filled</string></property></column>
+           <column><property name="text"><string>Stats</string></property></column>
+           <column><property name="text"><string>CNY</string></property></column>
+           <column><property name="text"><string>USD</string></property></column>
+           <column><property name="text"><string>Link</string></property></column>
+           <column><property name="text"><string>Copy</string></property></column>
+           <column><property name="text"><string>Del</string></property></column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1400</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
