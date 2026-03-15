@@ -98,14 +98,16 @@ class TaskStatus(Enum):
 
 # =============================================================================
 # Special Attributes (existence-based, no numeric value required)
+# Generated from Filter Word Mapping Table.xlsx (columns D/E/F)
+# 6 special attributes as requested
 # =============================================================================
 SPECIAL_ATTRIBUTES: Dict[str, List[str]] = {
-    'tp': ['tp', '传送', 'teleport', 'tele'],
-    'erep': ['erep', '自动修复', '自回', '无形自回'],
-    'eth': ['eth', '无形'],
-    'lt': ['lt', 'lifetap', '偷取生命', '吸取生命'],
-    'visio': ['visio', 'viso', '幻影', '幻视', '角色等级'],
-    'fools': ['fools', 'visio', 'viso', '幻影'],
+    'To Attack Rating(Based On Character Level)': ['fools', '愚人', '等级'],
+    'Bonus To Attack Rating (Based On Character Level)': ['visio', '幻影', '等级'],
+    'teleport': ['tp', '传送'],
+    'socket': ['socket', '孔'],
+    'Ethereal': ['Eth', '无形'],
+    'Life Tap': ['LT', '偷取生命', '生命偷取'],
 }
 
 
