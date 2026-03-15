@@ -100,12 +100,12 @@ class TaskStatus(Enum):
 # Special Attributes (existence-based, no numeric value required)
 # =============================================================================
 SPECIAL_ATTRIBUTES: Dict[str, List[str]] = {
-    'socket': ['socket', '孔'],
-    'Ethereal': ['Eth', '无形'],
-    'Eth and Repairs durability persecond': ['erep', '无形自回'],
-    'Eth and Replenishes Quantity': ['erep', '无形自回'],
-    'sigil:lethargy': ['sigil:lethargy', '昏沉'],
-    'miasma bolt': ['miasma bolt', '瘴气弹'],
+    'tp': ['tp', '传送', 'teleport', 'tele'],
+    'erep': ['erep', '自动修复', '自回', '无形自回'],
+    'eth': ['eth', '无形'],
+    'lt': ['lt', 'lifetap', '偷取生命', '吸取生命'],
+    'visio': ['visio', 'viso', '幻影', '幻视', '角色等级'],
+    'fools': ['fools', 'visio', 'viso', '幻影'],
 }
 
 
