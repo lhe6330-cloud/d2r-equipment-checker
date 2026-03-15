@@ -288,7 +288,8 @@ class MainWindow:
         conditions = []
         for filter_word_widget, min_widget, max_widget in self.filter_inputs:
             if filter_word_widget:
-                filter_word = filter_word_widget.text().strip()
+                # QComboBox uses currentText() instead of text()
+                filter_word = filter_word_widget.currentText().strip()
                 if filter_word:
                     conditions.append(FilterCondition(
                         filter_word=filter_word,
@@ -303,7 +304,8 @@ class MainWindow:
             if i < len(conditions):
                 condition = conditions[i]
                 if filter_word_widget:
-                    filter_word_widget.setText(condition.filter_word)
+                    # QComboBox uses setCurrentText() instead of setText()
+                    filter_word_widget.setCurrentText(condition.filter_word)
                 if min_widget:
                     min_widget.setText(condition.min_value or '')
                 if max_widget:
@@ -311,7 +313,7 @@ class MainWindow:
             else:
                 # Clear unused inputs
                 if filter_word_widget:
-                    filter_word_widget.setText('')
+                    filter_word_widget.setCurrentText('')
                 if min_widget:
                     min_widget.setText('')
                 if max_widget:
