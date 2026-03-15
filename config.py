@@ -459,10 +459,19 @@ def load_keyword_mapping(excel_path: str = None) -> Dict[str, str]:
         This function strictly uses the exact text from Excel.
         No auto-completion, no modification, no inference.
     """
+    import sys
+    import os
+    
     if excel_path is None:
         excel_path = get_keywords_file_path()
     
     mapping = {}
+    
+    # Try alternative path in _MEIPASS for frozen app
+    if not os.path.exists(excel_path) and hasattr(sys, '_MEIPASS'):
+        alt_path = os.path.join(sys._MEIPASS, 'keywords.xlsx')
+        if os.path.exists(alt_path):
+            excel_path = alt_path
     
     try:
         from openpyxl import load_workbook

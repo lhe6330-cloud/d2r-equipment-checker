@@ -2,16 +2,16 @@
 Main window controller for DD373 D2R Equipment Checker.
 """
 import logging
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 from datetime import datetime
 import os
 
 from PySide6.QtWidgets import (
     QMainWindow, QTableWidget, QTableWidgetItem, QPushButton,
     QComboBox, QCheckBox, QLineEdit, QFileDialog, QApplication,
-    QStatusBar, QWidget
+    QStatusBar, QWidget, QCompleter
 )
-from PySide6.QtCore import Qt, QTimer, QUrl
+from PySide6.QtCore import Qt, QTimer, QUrl, QStringListModel
 from PySide6.QtGui import QDesktopServices
 
 from config import (
@@ -67,6 +67,7 @@ class MainWindow:
         # Keyword selection tracking
         self._keyword_selected_from_dropdown = False
         self.keyword_mapping: Dict[str, str] = {}
+        self._all_keywords: List[str] = []  # All English keywords for filtering
         
         # Tables
         self.table_widget: QTableWidget = w.findChild(QTableWidget, "tableWidget")
@@ -108,21 +109,32 @@ class MainWindow:
         logger.info("Main window setup complete")
     
     def _load_keywords(self):
-        """Load keywords from Excel and populate combo box."""
+        """Load keywords from Excel and populate combo box with real-time filtering."""
         self.keyword_mapping = load_keyword_mapping()
         
         if self.keyword_combo and self.keyword_mapping:
-            # Add all English keywords to combo box
-            for en_keyword in sorted(self.keyword_mapping.keys()):
-                self.keyword_combo.addItem(en_keyword)
+            # Get sorted list of English keywords
+            self._all_keywords = sorted(self.keyword_mapping.keys())
             
-            # Set completion mode for better UX
-            self.keyword_combo.completer().setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-            self.keyword_combo.completer().setFilterMode(Qt.MatchFlag.MatchContains)
+            # Populate combo box with all keywords
+            self.keyword_combo.addItems(self._all_keywords)
             
-            logger.info(f"✓ Loaded {len(self.keyword_mapping)} keywords")
+            # Enable editing for real-time filtering
+            self.keyword_combo.setEditable(True)
+            
+            # Set up completer for real-time fuzzy filtering
+            completer = QCompleter(self._all_keywords, self.keyword_combo)
+            completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+            completer.setFilterMode(Qt.MatchFlag.MatchContains)
+            completer.setCompletionMode(QCompleter.CompletionMode.PopupCompletion)
+            completer.setMaxVisibleItems(15)  # Show max 15 items in dropdown
+            
+            self.keyword_combo.setCompleter(completer)
+            
+            logger.info(f"✓ Loaded {len(self.keyword_mapping)} keywords with real-time filtering")
         else:
             logger.warning("✗ Failed to load keywords")
+            self._all_keywords = []
     
     def _connect_signals(self):
         """Connect all UI signals to handlers."""
