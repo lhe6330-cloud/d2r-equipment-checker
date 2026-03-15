@@ -44,7 +44,7 @@ echo All files found.
 echo.
 echo [3/4] Building executable (this takes 2-3 minutes)...
 echo.
-py -m PyInstaller --noconfirm --onefile --windowed --name "D2R_Equipment_Checker" --add-data "d2rcheck.ui;." --hidden-import "PySide6.QtCore" --hidden-import "PySide6.QtGui" --hidden-import "PySide6.QtWidgets" --hidden-import "PySide6.QtUiTools" --hidden-import "bs4" --hidden-import "requests" d2rcheck.py
+py -m PyInstaller --noconfirm --onefile --windowed --name "D2R_Equipment_Checker" --add-data "d2rcheck.ui;." --add-data "keywords.xlsx;." --hidden-import "PySide6.QtCore" --hidden-import "PySide6.QtGui" --hidden-import "PySide6.QtWidgets" --hidden-import "PySide6.QtUiTools" --hidden-import "bs4" --hidden-import "requests" --hidden-import "openpyxl" d2rcheck.py
 
 if %errorlevel% neq 0 (
     echo.
