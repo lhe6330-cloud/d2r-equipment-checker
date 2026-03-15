@@ -100,156 +100,153 @@ class TaskStatus(Enum):
 # Special Attributes (existence-based, no numeric value required)
 # =============================================================================
 SPECIAL_ATTRIBUTES: Dict[str, List[str]] = {
-    'tp': ['tp', '传送', 'teleport', 'tele'],
-    'erep': ['erep', '自动修复', '自回', '无形自回'],
-    'eth': ['eth', '无形'],
-    'lt': ['lt', 'lifetap', '偷取生命', '吸取生命'],
-    'visio': ['visio', 'viso', '幻影', '幻视', '角色等级'],
-    'fools': ['fools', 'visio', 'viso', '幻影'],
+    'socket': ['socket', '孔'],
+    'Ethereal': ['Ethereal', 'Eth', '无形'],
+    'Eth and Repairs durability persecond': ['Eth and Repairs durability persecond', 'erep', '无形自回'],
+    'Eth and Replenishes Quantity': ['Eth and Replenishes Quantity', 'erep', '无形自回'],
+    'sigil:lethargy': ['sigil:lethargy', '迟缓'],
+    'miasma bolt': ['miasma bolt', '毒雾弹'],
 }
 
 
 # =============================================================================
 # Attribute Mappings (numeric value-based)
+# Generated from Filter Word Mapping Table.xlsx
 # =============================================================================
 ATTRIBUTE_MAP: Dict[str, List[str]] = {
-    # Basic stats
-    'fcr': ['施法', '施法速度', 'fcr', '快速施法', '快速施法速度'],
-    'str': ['力量', 'str', 'strength'],
-    'dex': ['敏捷', 'dex', 'dexterity'],
-    'vit': ['体能', 'vit', 'vitality', '生命', '体力'],
-    'ene': ['精力', 'ene', 'energy', '法力', '能量'],
-    
-    # Resistances
-    'all res': ['allres', 'resistance', '所有抗性'],
-    'fr': ['火焰抗性', '火抗', 'fr', 'fire resistance'],
-    'cr': ['冰冷抗性', '冰抗', 'cr', 'cold resistance'],
-    'lr': ['闪电抗性', '电抗', 'lr', 'lightning resistance'],
-    'pr': ['毒素抗性', '毒抗', 'pr', 'poison resistance'],
-    
-    # Magic find and gold
-    'mf': ['mf', '寻宝', '魔法物品获得', '掉宝率', '寻魔'],
-    'eg': ['eg', '打钱', '额外金币', '金币获得'],
-    
-    # Life and mana
-    'life': ['生命', 'life', 'hp'],
-    'mana': ['法力', 'mana', '魔法值'],
-    
-    # Defense and attack
-    'def': ['防御', 'def', 'defense'],
-    'ias': ['攻击速度', 'ias', 'attack speed'],
-    'll': ['吸血', 'll', 'life steal', 'life leach', '生命偷取'],
-    'lm': ['吸蓝', 'lm', 'mana steal', 'mana leach', '法力偷取', '魔法偷取'],
-    'ed': ['伤害', 'damage', 'ed', '增强伤害'],
-    'ar': ['准确率', 'ar', 'attack rating'],
-    
-    # Movement and recovery
-    'frw': ['frw', '高跑', '跑'],
-    'fhr': ['fhr', '打击恢复', '打击回复'],
-    'replife': ['replife', '生命恢复', '生命回复', '回血'],
-    
-    # Special combat
-    'cb': ['cb', '压碎打击', '粉碎性打击'],
-    'ds': ['ds', '致命打击'],
-    'socket': ['孔', 'socket', 'os'],
-    
-    # Damage
-    'max': ['max', '最大伤害'],
-    'min': ['min', '最小伤害'],
-    
-    # Necro/poison
-    'pnb': ['pnb', '毒骨', '毒系'],
-    'plr': ['plr', '毒缩', '中毒时间'],
-    
-    # Block
-    'icb': ['icb', '增加格挡', 'ctb', '格挡'],
-    
-    # Ethereal
-    'edef': ['edef', '防御强化', 'ed'],
-    
-    # Assassin skills
-    'ls': ['ls', '雷光', 'Lightning Sentry'],
-    'wof': ['wof', 'Wake of Fire', '火复苏', '火焰复生'],
-    'bf': ['bf', 'blade fury', '狂怒旋刃', '飞镖', '刃之怒'],
-    'sm': ['sm', '影子大师', 'Shadow Master'],
-    'Venom': ['Venom', '毒牙', '淬毒'],
-    'cos': ['cos', 'Cloak of Shadows', '魔影斗篷', '斗篷'],
-    'Fade': ['Fade', '能量消解', '影散'],
-    'cot': ['cot', 'Claws of Thunder', '雷电爪', '雷爪'],
-    'boi': ['boi', 'Blades of Ice', '寒冰刃', '冰刃'],
-    'ps': ['ps', 'Phoenix Strike', '凤凰击', '凤凰'],
-    'dt': ['dt', 'Dragon Tail', '神龙摆尾', '龙尾'],
-    'sin': ['sin', 'asn', '刺客'],
-    'Shadow': ['Shadow', '暗影修行'],
-    'trap': ['trap', '陷阱'],
-    'bs': ['bs', '刃之盾', '刀刃之盾', '利刃之盾'],
-    'Wb': ['Wb', '武器格挡', 'Weapon Block'],
-    'sw': ['sw', '影子战士'],
-    'FB': ['FB', 'Fire Blast', '火焰震爆', '火球'],
-    
-    # Curses
-    'AMP': ['AMP', 'Amplify Damage', '伤害加深'],
+    'Faster cast rate': ['Faster cast rate', 'fcr', '施法'],
+    'Faster Hit Recovery': ['Faster Hit Recovery', 'Fhr', '打击恢复'],
+    'Faster Run/Walk': ['Faster Run/Walk', 'frw', '跑'],
+    'strength': ['strength', 'str', '力量'],
+    'dexterity': ['dexterity', 'dex', '敏捷'],
+    'life': ['life', '生命'],
+    'vitality': ['vitality', 'vit', '体能'],
+    'energy': ['energy', 'ene', '精力'],
+    'all res': ['all res', 'allres', '所有抗性'],
+    'fire resistance': ['fire resistance', 'fr', '火抗'],
+    'cold resistance': ['cold resistance', 'cr', '冰抗'],
+    'lightning resistance': ['lightning resistance', 'lr', '电抗'],
+    'poison resistance': ['poison resistance', 'pr', '毒抗'],
+    'magic find': ['magic find', 'mf', '寻宝'],
+    'extro gold': ['extro gold', 'eg', '打钱'],
+    'mana': ['mana', '法力'],
+    'defense': ['defense', 'def', '防御'],
+    'Increased attack speed': ['Increased attack speed', 'ias', '攻击速度'],
+    'life steal': ['life steal', 'll', '吸血'],
+    'mana steal': ['mana steal', 'lm', '吸蓝'],
+    'Enhanced Damage/': ['Enhanced Damage/', 'ed', '伤害'],
+    'Enhanced Defense': ['Enhanced Defense', 'ed', '防御'],
+    'attack rating': ['attack rating', 'ar', '准确率'],
+    'socket': ['socket', '孔'],
+    'Chance Of Crushing Blow': ['Chance Of Crushing Blow', 'cb', '压碎打击'],
+    'Replenish Life': ['Replenish Life', 'replife', '生命恢复'],
+    'Chance Of Deadly Strike': ['Chance Of Deadly Strike', 'ds', '致命打击'],
+    'To Attack Rating(Based On Character Level)': ['To Attack Rating(Based On Character Level)', 'fools', '幻影'],
+    'Bonus To Attack Rating (Based On Character Level)': ['Bonus To Attack Rating (Based On Character Level)', 'visio', '角色等级'],
+    'Max dmg': ['Max dmg', 'max', '最大伤害'],
+    'Min dmg': ['Min dmg', 'min', '最小伤害'],
+    'Poison Length Reduced by': ['Poison Length Reduced by', 'plr', '中毒时间减少'],
+    'to Poison and Bone Skills(Necromancer Only)': ['to Poison and Bone Skills(Necromancer Only)', 'pnb', '毒骨'],
+    'Ethereal': ['Ethereal', 'Eth', '无形'],
+    'Eth and Repairs durability persecond': ['Eth and Repairs durability persecond', 'erep', '无形自回'],
+    'Eth and Replenishes Quantity': ['Eth and Replenishes Quantity', 'erep', '无形自回'],
+    'teleport': ['teleport', 'tp', '传送'],
+    'Increased Chance of Blocking': ['Increased Chance of Blocking', 'icb', '增加格挡'],
+    'Mind blast': ['Mind blast', 'mb', '心灵爆震'],
+    'Lightning Sentry': ['Lightning Sentry', 'ls', '雷光哨卫'],
+    'Wake of Fire': ['Wake of Fire', 'wof', '火焰复苏'],
+    'Blade Fury': ['Blade Fury', 'bf', '刀刃之怒'],
+    'Fire Blast': ['Fire Blast', 'FB', '火焰爆'],
+    'Fire ball': ['Fire ball', 'FB', '火球'],
+    'Shadow Master': ['Shadow Master', 'sm', '影子大师'],
+    'Venom': ['Venom', '毒牙'],
+    'Weapon Block': ['Weapon Block', 'Wb', '武器格挡'],
+    'Shadow Warrior': ['Shadow Warrior', 'sw', '影子战士'],
+    'Cloak of Shadows': ['Cloak of Shadows', 'cos', '魔影斗篷'],
+    'Fade': ['Fade', '能量消解'],
+    'Claws of Thunder': ['Claws of Thunder', 'cot', '雷电爪'],
+    'Blades of Ice': ['Blades of Ice', 'boi', '寒冰刃'],
+    'Phoenix Strike': ['Phoenix Strike', 'ps', '凤凰击'],
+    'Dragon Tail': ['Dragon Tail', 'dt', '神龙摆尾'],
+    'assassin': ['assassin', 'sin', '刺客'],
+    'Shadow skill': ['Shadow skill', 'Shadow', '暗影'],
+    'Trap skill': ['Trap skill', 'trap', '陷阱'],
+    'Blade sheild': ['Blade sheild', 'bs', '刃之盾'],
+    'Amplify Damage': ['Amplify Damage', 'AMP', '伤害加深'],
     'Terror': ['Terror', '恐惧'],
     'Confuse': ['Confuse', '迷乱'],
+    'Life Tap': ['Life Tap', 'LT', '偷取生命'],
     'Attract': ['Attract', '吸引'],
-    'LT': ['Life Tap', 'LT', '偷取生命', '吸取生命'],
-    'Decrep': ['Decrep', 'Decrepify', '衰老'],
-    
-    # Necro skills
-    'BS': ['BS', 'bone spear', '骨矛'],
-    'BSpirit': ['BSpirit', 'Bone Spirit', '骨魂'],
-    'BP': ['BP', 'Bone Prison', '骨牢'],
-    'BW': ['BW', 'Bone Wall', '骨墙'],
-    
-    # Paladin skills
+    'Decrepify': ['Decrepify', 'Decrep', '衰老'],
+    'Lower Resist': ['Lower Resist', 'LR', '降低抵抗'],
+    'Bone Spear': ['Bone Spear', 'BS', '骨矛'],
+    'Bone Spirit': ['Bone Spirit', 'BSpirit', '骨魂'],
+    'Poison Nova': ['Poison Nova', 'PN', '毒新星'],
+    'Bone Prison': ['Bone Prison', 'BP', '骨牢'],
+    'Blessed Hammer': ['Blessed Hammer', 'BH', '祝福之锤'],
+    'Golem Mastery': ['Golem Mastery', 'GM', '石魔支配'],
+    'Fire Golem': ['Fire Golem', 'FG', '火焰石魔'],
+    'Blood Golem': ['Blood Golem', 'Bg', '鲜血石魔'],
+    'Clay Golem': ['Clay Golem', 'cg', '黏土石魔'],
+    'Bone Wall': ['Bone Wall', 'BWall', '骨墙'],
     'Charge': ['Charge', '冲锋'],
-    'Bh': ['Bh', 'Blessed Hammer', '祝福之锤'],
-    'Conc': ['conc', 'Concentration', '专注'],
-    'conv': ['conv', 'Conviction', '信念', '审判'],
-    'Foh': ['Foh', 'Fist of the Heavens', '天堂之拳'],
+    'Concentration': ['Concentration', 'Conc', '专注'],
+    'Conviction': ['Conviction', 'Conv', '信念'],
+    'Fist of the Heavens': ['Fist of the Heavens', 'Foh', '天堂之拳'],
     'Combat': ['Combat', '战斗技能'],
     'Offensive': ['Offensive', '攻击灵气'],
-    
-    # Sorceress cold skills
-    'sa': ['sa', 'Shiver Armor', '碎冰甲'],
-    'FN': ['fn', 'Frost Nova', '霜之新星'],
-    'ca': ['ca', 'Chilling Armor', '寒冰装甲'],
-    'Blizz': ['Blizz', 'Blizzard', '暴风雪'],
-    'FO': ['FO', 'frozen orb', '冰封球'],
-    'CM': ['CM', 'Cold Mastery', '寒冰专精', '冰冷掌握', '冰冷精通'],
-    
-    # Sorceress lightning skills
-    'Nova': ['Nova', '新星', '闪电新星'],
-    'Lightning': ['Lightning', '闪电', '闪电箭'],
-    'CL': ['CL', 'Chain Lightning', '连锁闪电', '连闪'],
-    'ts': ['ts', 'Thunder Storm', '雷云风暴'],
-    'es': ['es', 'Energy Shield', '能量护盾'],
-    'lmas': ['lmas', 'Lightning Mastery', '闪电专精', '闪电掌握', '闪电精通'],
-    
-    # Sorceress fire skills
-    'fw': ['fw', 'Fire Wall', '火墙'],
-    'Enchant': ['Enchant', '火焰强化', '强化'],
+    'Shiver Armor': ['Shiver Armor', 'SA', '碎冰甲'],
+    'Chilling Armor': ['Chilling Armor', 'ca', '寒冰装甲'],
+    'Frozen Orb': ['Frozen Orb', 'fo', '冰封球'],
+    'Cold Mastery': ['Cold Mastery', 'CM', '冰冷支配'],
+    'Blizzard': ['Blizzard', 'blizz', '暴风雪'],
+    'Nova': ['Nova', '新星'],
+    'Lightning': ['Lightning', '闪电'],
+    'Chain Lightning': ['Chain Lightning', 'CL', '连锁闪电'],
+    'Thunder Storm': ['Thunder Storm', 'ts', '雷云风暴'],
+    'Energy Shield': ['Energy Shield', 'es', '能量护盾'],
+    'Lightning Mastery': ['Lightning Mastery', 'lm', '闪电支配'],
+    'Fire Wall': ['Fire Wall', 'fw', '火墙'],
     'Meteor': ['Meteor', '陨石'],
-    'Hydra': ['Hydra', '九头海蛇'],
-    'fm': ['fm', 'Fire Mastery', '火焰专精', '火焰掌握', '火焰精通'],
-    
-    # Druid skills
+    'Hydra': ['Hydra', '九头蛇'],
+    'Enchant': ['Enchant', '强化'],
+    'Fire Mastery': ['Fire Mastery', 'fm', '火焰支配'],
+    'Frost Nova': ['Frost Nova', 'FN', '霜之新星'],
     'Fissure': ['Fissure', '火山爆'],
-    'Volc': ['Volc', 'Volcano', '火山'],
-    'Cyclone': ['Cyclone', 'Cyclone ARMOR', '飓风装甲'],
-    'nado': ['Tornado', 'nado', '龙卷风'],
+    'Volcano': ['Volcano', 'Volc', '火山'],
+    'Cyclone Armor': ['Cyclone Armor', 'Cyclone', '飓风装甲'],
+    'Tornado': ['Tornado', 'nado', '龙卷风'],
     'Hurricane': ['Hurricane', '暴风'],
-    'FS': ['Firestorm', 'FS', '火风暴'],
     'Maul': ['Maul', '撞槌'],
-    'oak': ['oak', 'Oak Sage', '橡木'],
-    'how': ['how', 'Heart of Wolverine', '狼獾'],
-    'fury': ['fury', '狂怒'],
-    
-    # Golem skills
-    'gm': ['gm', 'Golem Mastery', '石魔掌握', '魔像'],
-    'fg': ['fg', 'Fire Golem', '火焰魔像'],
-    'bg': ['bg', 'Blood Golem', '鲜血'],
-    'cg': ['cg', 'Clay Golem', '黏土魔像'],
+    'Oak Sage': ['Oak Sage', 'oak', '橡木智者'],
+    'Fury': ['Fury', '狂怒'],
+    'Heart of Wolverine': ['Heart of Wolverine', 'HoW', '狼獾之心'],
+    'Firestorm': ['Firestorm', 'FS', '火风暴'],
+    'ring of fire': ['ring of fire', '火焰环'],
+    'flame wave': ['flame wave', '火焰波'],
+    'apocalypse': ['apocalypse', '启示'],
+    'sigil:lethargy': ['sigil:lethargy', '迟缓'],
+    'sigil:rancor': ['sigil:rancor', '怨恨'],
+    'sigil:death': ['sigil:death', '死亡'],
+    'miasma bolt': ['miasma bolt', '毒雾弹'],
+    'miasma chain': ['miasma chain', '毒雾链'],
+    'enhanced entropy': ['enhanced entropy', '增强熵'],
+    'abyss': ['abyss', '深渊'],
+    'levitation mastery': ['levitation mastery', '漂浮支配'],
+    'echoing strike': ['echoing strike', '回音击'],
+    'blade warp': ['blade warp', '刃之扭曲'],
+    'cleave': ['cleave', '劈砍'],
+    'psychic ward': ['psychic ward', '心灵结界'],
+    'eldritch blast': ['eldritch blast', '诡异爆'],
+    'mirrored blades': ['mirrored blades', '镜像之刃'],
+    'hex:bane': ['hex:bane', '诅咒'],
+    'hex:purge': ['hex:purge', '净化'],
+    'hex:siphon': ['hex:siphon', '吸取'],
+    'demonic mastery': ['demonic mastery', '恶魔支配'],
+    'consume': ['consume', '吞噬'],
+    'engorge': ['engorge', '吞食'],
+    'blood boil': ['blood boil', '血液沸腾'],
+    'bind demon': ['bind demon', '束缚恶魔'],
 }
 
 
@@ -489,3 +486,56 @@ def load_keyword_mapping(excel_path: str = None) -> Dict[str, str]:
     except Exception as e:
         print(f"Warning: Failed to load keywords from Excel: {e}")
         return {}
+
+
+# =============================================================================
+# Filter Words Configuration (V3.5+)
+# =============================================================================
+
+def get_filter_words_file_path() -> str:
+    """Get the path to Filter Word Mapping Table.xlsx file."""
+    if hasattr(sys, '_MEIPASS'):
+        # Running as bundled exe
+        return os.path.join(sys._MEIPASS, 'Filter Word Mapping Table.xlsx')
+    # Running in normal Python environment
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Filter Word Mapping Table.xlsx')
+
+
+def load_filter_words(excel_path: str = None) -> List[str]:
+    """
+    Load all filter words from Filter Word Mapping Table.xlsx.
+    
+    Returns:
+        List of filter words (column B from Excel).
+        Example: ["Faster cast rate", "Faster Hit Recovery", "strength", ...]
+    """
+    import sys
+    import os
+    
+    if excel_path is None:
+        excel_path = get_filter_words_file_path()
+    
+    filter_words = []
+    
+    # Try alternative path in _MEIPASS for frozen app
+    if not os.path.exists(excel_path) and hasattr(sys, '_MEIPASS'):
+        alt_path = os.path.join(sys._MEIPASS, 'Filter Word Mapping Table.xlsx')
+        if os.path.exists(alt_path):
+            excel_path = alt_path
+    
+    try:
+        from openpyxl import load_workbook
+        wb = load_workbook(excel_path, data_only=True)
+        ws = wb.active
+        
+        # Read column B (filter word) from row 2 onwards
+        for row in range(2, ws.max_row + 1):
+            filter_word = ws.cell(row=row, column=2).value
+            if filter_word and str(filter_word).strip():
+                filter_words.append(str(filter_word).strip())
+        
+        return filter_words
+    
+    except Exception as e:
+        print(f"Warning: Failed to load filter words from Excel: {e}")
+        return []

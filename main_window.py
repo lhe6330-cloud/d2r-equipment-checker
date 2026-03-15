@@ -16,7 +16,7 @@ from PySide6.QtGui import QDesktopServices
 
 from config import (
     TaskStatus, COLUMN_WIDTHS, get_gear_type_url, format_cny, format_usd,
-    load_keyword_mapping
+    load_keyword_mapping, load_filter_words
 )
 from models import ItemData, FilterCondition, SearchTask, TaskResultItem
 from data_manager import DataManager
@@ -89,13 +89,16 @@ class MainWindow:
         self.mark_all_unfilled_btn: QPushButton = w.findChild(QPushButton, "mark_all_unfilled")
         self.clear_filled_btn: QPushButton = w.findChild(QPushButton, "clear_filled")
         
-        # Filter inputs
-        self.filter_inputs: List[Tuple[QLineEdit, QLineEdit, QLineEdit]] = []
-        for i in range(1, 5):
-            filter_word = w.findChild(QLineEdit, f"filter_word_{i}")
+        # Filter inputs (V3.5+: QComboBox for filter words with real-time filtering)
+        self.filter_inputs: List[Tuple[QComboBox, QLineEdit, QLineEdit]] = []
+        for i in range(1, 4):  # 3 rows instead of 4
+            filter_word = w.findChild(QComboBox, f"filter_word_{i}")
             fw_min = w.findChild(QLineEdit, f"fw_{i}_min")
             fw_max = w.findChild(QLineEdit, f"fw_{i}_max")
             self.filter_inputs.append((filter_word, fw_min, fw_max))
+        
+        # Filter words list for auto-completion
+        self._all_filter_words: List[str] = []
         
         # Status bar
         self.statusbar: QStatusBar = w.statusbar
@@ -103,6 +106,7 @@ class MainWindow:
     def setup(self):
         """Set up all UI connections and initial state."""
         self._load_keywords()
+        self._load_filter_words()
         self._connect_signals()
         self._setup_initial_state()
         self._load_data()
@@ -135,6 +139,36 @@ class MainWindow:
         else:
             logger.warning("✗ Failed to load keywords")
             self._all_keywords = []
+    
+    def _load_filter_words(self):
+        """Load filter words from Excel and populate filter combo boxes with real-time filtering."""
+        self._all_filter_words = load_filter_words()
+        
+        if self._all_filter_words:
+            # Sort filter words for better UX
+            self._all_filter_words = sorted(self._all_filter_words)
+            
+            # Setup each filter combo box (3 rows)
+            for filter_combo, _, _ in self.filter_inputs:
+                if filter_combo:
+                    # Populate combo box with all filter words
+                    filter_combo.addItems(self._all_filter_words)
+                    
+                    # Enable editing for real-time filtering
+                    filter_combo.setEditable(True)
+                    
+                    # Set up completer for real-time fuzzy filtering
+                    completer = QCompleter(self._all_filter_words, filter_combo)
+                    completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+                    completer.setFilterMode(Qt.MatchFlag.MatchContains)
+                    completer.setCompletionMode(QCompleter.CompletionMode.PopupCompletion)
+                    completer.setMaxVisibleItems(15)  # Show max 15 items in dropdown
+                    
+                    filter_combo.setCompleter(completer)
+            
+            logger.info(f"✓ Loaded {len(self._all_filter_words)} filter words with real-time filtering")
+        else:
+            logger.warning("✗ Failed to load filter words")
     
     def _connect_signals(self):
         """Connect all UI signals to handlers."""

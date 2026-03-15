@@ -435,7 +435,8 @@ QLabel[headerLabel="true"] {
           </item>
           <!-- Filter Row 1 -->
           <item row="1" column="0">
-           <widget class="QLineEdit" name="filter_word_1">
+           <widget class="QComboBox" name="filter_word_1">
+            <property name="editable"><bool>true</bool></property>
             <property name="placeholderText"><string>fcr, str, mf...</string></property>
            </widget>
           </item>
@@ -453,7 +454,8 @@ QLabel[headerLabel="true"] {
           </item>
           <!-- Filter Row 2 -->
           <item row="2" column="0">
-           <widget class="QLineEdit" name="filter_word_2">
+           <widget class="QComboBox" name="filter_word_2">
+            <property name="editable"><bool>true</bool></property>
             <property name="placeholderText"><string>all res, life...</string></property>
            </widget>
           </item>
@@ -471,7 +473,8 @@ QLabel[headerLabel="true"] {
           </item>
           <!-- Filter Row 3 -->
           <item row="3" column="0">
-           <widget class="QLineEdit" name="filter_word_3">
+           <widget class="QComboBox" name="filter_word_3">
+            <property name="editable"><bool>true</bool></property>
             <property name="placeholderText"><string>+skills, ed...</string></property>
            </widget>
           </item>
@@ -483,24 +486,6 @@ QLabel[headerLabel="true"] {
           </item>
           <item row="3" column="2">
            <widget class="QLineEdit" name="fw_3_max">
-            <property name="maximumWidth"><number>55</number></property>
-            <property name="alignment"><set>Qt::AlignCenter</set></property>
-           </widget>
-          </item>
-          <!-- Filter Row 4 -->
-          <item row="4" column="0">
-           <widget class="QLineEdit" name="filter_word_4">
-            <property name="placeholderText"><string>socket, eth...</string></property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="fw_4_min">
-            <property name="maximumWidth"><number>55</number></property>
-            <property name="alignment"><set>Qt::AlignCenter</set></property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QLineEdit" name="fw_4_max">
             <property name="maximumWidth"><number>55</number></property>
             <property name="alignment"><set>Qt::AlignCenter</set></property>
            </widget>
