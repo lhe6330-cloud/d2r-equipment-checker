@@ -275,6 +275,7 @@ ATTRIBUTE_MAP: Dict[str, List[str]] = {
     'engorge': ['engorge', '吞食'],
     'blood boil': ['blood boil', '沸血术'],
     'bind demon': ['bind demon', '束缚恶魔'],
+    'Damage Reduced': ['dr', '伤害减少'],
 }
 
 
