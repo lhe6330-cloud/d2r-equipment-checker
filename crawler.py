@@ -4,12 +4,16 @@ Handles web scraping in a background thread.
 """
 import time
 import logging
+import os
+import sys
 import urllib.parse
 from typing import List, Optional
 
 import requests
 from bs4 import BeautifulSoup
 from PySide6.QtCore import QThread, Signal
+
+from playwright.sync_api import sync_playwright
 
 from config import USER_AGENT, REQUEST_TIMEOUT, PAGE_DELAY_SECONDS
 from models import ItemData, FilterCondition
@@ -58,8 +62,53 @@ class CrawlerThread(QThread):
         # Attribute filter
         self.attr_filter = AttributeFilter()
         
-        # HTTP headers
-        self.headers = {'User-Agent': USER_AGENT}
+        # HTTP session with WAF bypass
+        self.session = requests.Session()
+        self.session.headers.update({'User-Agent': USER_AGENT})
+        self._ensure_cookies()
+
+    def _ensure_cookies(self):
+        """Use Playwright to execute DD373 JS challenge and obtain valid cookies."""
+        # Point Playwright to bundled browser if present (PyInstaller dist folder)
+        if hasattr(sys, '_MEIPASS'):
+            exe_dir = os.path.dirname(sys.executable)
+        else:
+            exe_dir = os.path.dirname(os.path.abspath(__file__))
+        browser_found = False
+        for entry in os.listdir(exe_dir):
+            if entry.startswith('chromium-') and not entry.startswith('chromium_headless'):
+                os.environ['PLAYWRIGHT_BROWSERS_PATH'] = exe_dir
+                logger.info(f'Using bundled Playwright browser: {os.path.join(exe_dir, entry)}')
+                browser_found = True
+                break
+        if not browser_found:
+            logger.warning('No bundled Playwright browser found, using system default')
+
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                context = browser.new_context(
+                    user_agent=USER_AGENT,
+                    viewport={'width': 1280, 'height': 720}
+                )
+                page = context.new_page()
+                # Visit homepage to get initial cookies
+                page.goto('https://www.dd373.com/', wait_until='load', timeout=30000)
+                # Visit the search URL to trigger JS challenge on listing path
+                page.goto(self.search_url, wait_until='load', timeout=30000)
+                # Small delay to ensure JS challenge completes
+                page.wait_for_timeout(2000)
+                cookies = context.cookies()
+                for c in cookies:
+                    self.session.cookies.set(c['name'], c['value'], domain=c.get('domain', '.dd373.com'))
+                browser.close()
+                cookie_names = [c['name'] for c in cookies]
+                logger.info(f'Browser cookies obtained ({len(cookies)}): {cookie_names}')
+                if 'acw_sc__v2' not in cookie_names:
+                    logger.warning('acw_sc__v2 cookie not found, WAF bypass may have failed')
+        except Exception as e:
+            logger.error(f'WAF cookie bypass failed: {e}')
+            logger.error('Crawler may not work correctly without WAF cookies')
     
     def run(self):
         """Main thread function."""
@@ -106,9 +155,8 @@ class CrawlerThread(QThread):
     def _get_total_pages(self) -> Optional[int]:
         """Determine the total number of pages to crawl."""
         try:
-            response = requests.get(
-                self.search_url, 
-                headers=self.headers, 
+            response = self.session.get(
+                self.search_url,
                 timeout=REQUEST_TIMEOUT
             )
             
@@ -253,9 +301,8 @@ class CrawlerThread(QThread):
         page_url = self._build_page_url(page)
         
         try:
-            response = requests.get(
-                page_url, 
-                headers=self.headers, 
+            response = self.session.get(
+                page_url,
                 timeout=REQUEST_TIMEOUT
             )
             
